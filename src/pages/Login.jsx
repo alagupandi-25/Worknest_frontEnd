@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -7,6 +8,8 @@ function Login() {
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [response, setResponse] = useState("");
+
+    const nav = useNavigate();
 
     const inputHandle = async (e) => {
         e.preventDefault();
@@ -31,7 +34,15 @@ function Login() {
         if (valid) {
             try {
                 const res = await axios.post("http://127.0.0.1:8080/user", { email, password });
-                setResponse(res.data.message);
+                
+                localStorage.setItem('token', res.data.token);
+                localStorage.setItem('expiresAt', res.data.expiresAt);
+                localStorage.setItem('firstName', res.data.user.firstName);
+                localStorage.setItem('lastName', res.data.user.lastName);
+                localStorage.setItem('email', res.data.user.email);
+                localStorage.setItem("Role",res.data.user.role);
+
+                nav("/");
             } catch (err) {
                 const errorMsg = err.response?.data?.message || "Something went wrong.";
                 setResponse(errorMsg);

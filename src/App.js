@@ -1,16 +1,16 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 import Header from "./components/Header";
 import Sidebar from "./components/sideBar";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Tasks from "./pages/Tasks";
 import Projects from "./pages/Project";
 import Chat from "./pages/Chats";
 import Meetings from "./pages/Meetings";
 import Resources from "./pages/Resources";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./pages/ProtectedRoute"; 
 
 function Layout() {
   return (
@@ -32,7 +32,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<ProtectedRoute><Layout/></ProtectedRoute> }>
           <Route index element={<Home />} />
           <Route path="tasks" element={<Tasks />} />
           <Route path="projects" element={<Projects />} />
@@ -40,6 +40,7 @@ function App() {
           <Route path="meetings" element={<Meetings />} />
           <Route path="resources" element={<Resources />} />
         </Route>
+
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
